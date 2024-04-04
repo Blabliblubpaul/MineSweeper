@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 
-function App() {
+import Layout from "./features/components/Layout"
+import MineSweeper from "./features/components/MineSweeper/MineSweeper"
+import MainMenu from "./features/components/MineSweeper/MainMenu"
+import PlayMenu from "./features/components/MineSweeper/PlayMenu"
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path="/" Component={Layout}>
+            <Route index Component={MainMenu}/>
+            <Route path="/" Component={MainMenu}/>
+            <Route path="/menu" Component={PlayMenu}/>
+            <Route path="/game" Component={MineSweeper}/>
+        </Route>
+      </Routes>
+    </Router>
+  )
 }
-
-export default App;

@@ -1,0 +1,360 @@
+body {
+  width: 100%;
+
+  margin: 0;
+
+  background: var(--site-background-color);
+}
+
+#container {
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  grid-template-rows: [top] 5rem auto;
+  grid-template-areas:
+  "head"
+  "body";
+}
+
+#header {
+  grid-area: head;
+
+  padding-left: 1.0rem;
+  padding-right: 1.0rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+
+  background: var(--header-background-color);
+  color: var(--text-color);
+}
+
+#headerTitle {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.headerNavButton {
+  margin-right: 1rem;
+
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: none;
+
+  font-size: xx-large;
+
+  background: none;
+  color: var(--text-color);
+}
+
+.headerNavButton:hover {
+  cursor: pointer;
+
+  outline: 2px solid var(--header-navbutton-outline-color);
+}
+
+.headermiddle {
+  width: 50%;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#mainbody {
+  grid-area: body;
+ 
+}
+
+#ms-board {
+  position: fixed;
+
+  width: fit-content;
+  height: fit-content;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  
+  text-wrap: nowrap;
+
+  outline: 2px solid var(--panel-outline-color-1);
+}
+
+.ms-row {
+  width: fit-content;
+}
+
+.ms-cell-container {
+  display: inline;
+}
+
+.ms-cell-container-game-over-reveal {
+  opacity: 0.35;
+}
+
+.ms-cell {
+  height: 2rem;
+  width: 2rem;
+
+  vertical-align: middle;
+
+  border-style: outset;
+  font-size: larger;
+
+  background: var(--unopened-cell-color);
+}
+
+.ms-cell-hint {
+  background: var(--cell-hint-color);
+}
+
+.ms-cell:hover {
+  cursor: pointer;
+
+  background: var(--button-color-focus-2);
+}
+
+.ms-cell:active {
+  background: var(--button-color-active-2);
+}
+
+.ms-cell-hint:hover {
+  background: var(--cell-hint-hover-color);
+}
+
+.ms-cell-hint:active {
+  background: var(--cell-hint-active-color);
+}
+
+.ms-cell-opened {
+  border-style: inset;
+
+  background: var(--opened-cell-color);
+}
+
+.ms-cell-opened:hover {
+  cursor: auto;
+
+  background: var(--opened-cell-color);
+}
+
+.ms-cell-opened:active {
+  background: var(--opened-cell-color);
+}
+
+.ms-game-over-label {
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+  
+  top: 0;
+  left: 0;
+
+  padding-top: 7vw;
+
+  z-index: 1;
+
+  font-size: 10vw;
+  text-align: center;
+
+  background-color: var(--overlay-color);
+}
+
+#play-menu {
+  position: fixed;
+
+  width: fit-content;
+  height: fit-content;
+
+  top: 50%;
+  left: 50%;
+
+  padding: 1rem;
+  /* padding-right: 3rem; */
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+
+  outline: 2px solid black;
+}
+
+#play-menu-header {
+  text-decoration: underline;
+}
+
+.pm-setting {
+  margin-bottom: 1rem;
+}
+
+.pm-header {
+  width: 15rem; /* To make the panel broader */
+
+  margin: 0;
+  margin-bottom: 0.2rem;
+}
+
+#pm-board-size-inputs {
+  display: flex;
+}
+
+.pm-input {
+  height: 1rem;
+  width: 2.5rem;
+}
+
+#pm-board-size-input-divider {
+  margin: 0;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+#pm-start-button {
+  margin: 0;
+
+  width: 50%;
+
+  align-self: center;
+
+  font-size: x-large;
+}
+
+.pm-start-button-disabled {
+  border: 1px solid rgb(104, 104, 104);
+
+  color: rgba(0, 0, 0, 0.699);
+  background: rgb(222, 222, 222);
+}
+
+:root {
+  /* General */
+  --site-background-color: rgb(228, 228, 228);
+  --text-color: black;
+  --overlay-color: rgba(160, 160, 160, 0.5);
+  --dropdown-background-color: white;
+
+  /* Focus */
+  --focus-color: #C7511F;
+  --focus-color-2: #c7621fd2;
+
+  /* Cells */
+  --unopened-cell-color: rgb(195, 195, 195);
+  --opened-cell-color: rgb(220, 220, 220);
+
+  --cell-hover-color: rgb(175, 175, 175);
+  --cell-active-color: rgb(155, 155, 155);
+
+  --cell-hint-color: rgb(95, 190, 90);
+  --cell-hint-hover-color: rgb(75, 170, 70);
+  --cell-hint-active-color: rgb(55, 150, 50);
+
+  --cell-game-over-reveal-color: rgb(120, 120, 120);
+
+  /* Buttons */
+  --button-color-1: rgb(175, 175, 175);
+  --button-color-2: rgb(195, 195, 195);
+  --button-color-3: rgb(155, 155, 155);
+  --button-color-4: rgb(120, 120, 120);
+
+  --button-color-focus-1: rgb(150, 150, 150);
+  --button-color-focus-2: rgb(175, 175, 175);
+  --button-color-focus-3: rgb(140, 140, 140);
+  --button-color-focus-4: rgb(110, 110, 110);
+
+  --button-color-active-1: rgb(125, 125, 125);
+  --button-color-active-2: rgb(155, 155, 155);
+  --button-color-active-3: rgb(120, 120, 120);
+  --button-color-active-4: rgb(95, 95, 95);
+
+  /* Panels */
+  --panel-background-1: rgb(170, 170, 170);
+  --panel-background-2: rgb(210, 210, 210);
+  --panel-background-3: rgb(190, 190, 190);
+  --panel-background-4: rgb(140, 140, 140);
+
+  --panel-background-border-1: rgb(130, 130, 130);
+  --panel-background-border-2: rgba(170, 170, 170, 0.7);
+  --panel-background-border-3: rgb(110, 110, 110);
+
+  --panel-outline-color-1: black;
+
+  /* Seperators */
+  --seperator-color-1: rgb(146, 146, 146);
+  --seperator-color-2: black;
+
+  /* Images */
+  --image-background-color: rgb(236, 236, 236);
+
+  /* Header */
+  --header-background-color: rgb(95, 95, 95);
+  --searchbar-background-color: rgb(216, 216, 216);
+  --header-navbutton-outline-color: rgb(117, 117, 117);
+}
+
+.dark-mode {
+  /* General */
+  --site-background-color: rgb(125, 125, 125);
+  --text-color: rgb(12, 12, 12);
+  --dropdown-background-color: rgb(211, 211, 211);
+
+  /* Focus */
+  --focus-color: #a54319;
+  --focus-color-2: #a04f19d2;
+
+  /* Buttons */
+  --button-color-1: rgb(140, 140, 140);
+  --button-color-2: rgb(160, 160, 160);
+  --button-color-3: rgb(120, 120, 120);
+  --button-color-4: rgb(85, 85, 85);
+
+  --button-color-focus-1: rgb(115, 115, 115);
+  --button-color-focus-2: rgb(140, 140, 140);
+  --button-color-focus-3: rgb(105, 105, 105);
+  --button-color-focus-4: rgb(75, 75, 75);
+
+  --button-color-active-1: rgb(90, 90, 90);
+  --button-color-active-2: rgb(120, 120, 120);
+  --button-color-active-3: rgb(85, 85, 85);
+  --button-color-active-4: rgb(60, 60, 60);
+  
+  /* Panels */
+  --panel-background-1: rgb(135, 135, 135);
+  --panel-background-2: rgb(175, 175, 175);
+  --panel-background-3: rgb(155, 155, 155);
+  --panel-background-4: rgb(105, 105, 105);
+
+  --panel-background-border-1: rgb(62, 62, 62);
+  --panel-background-border-2: rgba(135, 135, 135, 0.7);
+  --panel-background-border-3: rgb(75, 75, 75);
+
+  --panel-outline-color-1: black;
+
+  /* Seperators */
+  --seperator-color-1: rgb(87, 87, 87);
+  --seperator-color-2: black;
+
+  /* Images */
+  --image-background-color: rgb(200, 200, 200);
+
+  /* Header */
+  --header-background-color: rgb(60, 60, 60);
+  --searchbar-background-color: rgb(162, 162, 162);
+  --header-navbutton-outline-color: rgb(82, 82, 82);
+
+
+        
+  --a: rgba(0, 128, 0, 0.481);
+  --b: rgb(0, 0, 255);
+  --c: rgb(230, 230, 0);
+  --d: rgb(255, 165, 0);
+  --e: rgb(255, 0, 0);
+       
+}
