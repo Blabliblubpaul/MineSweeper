@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Board from "./Board";
 import { useSearchParams } from "react-router-dom";
 
@@ -10,6 +10,8 @@ import { useSearchParams } from "react-router-dom";
 */
 
 export default function MineSweeper() {
+    const dispatch = useDispatch()
+
     let [searchParams] = useSearchParams()
 
     let rows: number = Number(searchParams.get("r"))
@@ -19,8 +21,6 @@ export default function MineSweeper() {
     let hint: boolean = searchParams.get("h") === "true"
 
     return (
-        <div id="mineSweeper">
-            <Board rows={rows} columns={columns} mines={mines} metalDetectors={metalDetectors} hint={hint}/>
-        </div>
+        <Board rows={rows} columns={columns} mines={mines} metalDetectors={metalDetectors} hint={hint}/>
     )
 }

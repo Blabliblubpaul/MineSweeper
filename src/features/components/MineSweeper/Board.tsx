@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Cell from "./Cell"
 import cloneDeep from "lodash/cloneDeep"
+import GameEndScreen from "./GameEndScreen"
 
 interface BoardParams {
     rows: number,
@@ -33,15 +34,24 @@ interface BoardCreationProps {
 export default function Board({rows, columns, mines, metalDetectors, hint}: BoardParams) {
     const [boardState, setBoardState] = useState(createBoardArray(rows, columns, mines, hint))
     const [gameOver, setGameOver] = useState(false)
+    const [won, setWon] = useState(false)
+
     // Hide the hint after the first click
     const [showHint, setShowHint] = useState(true)
 
+    const [flagCount, setFlagCount] = useState(0)
+    const [metalDetectorsLeft, setMetalDetectorsLeft] = useState(metalDetectors)
+    const [openedCells, setOpenedCells] = useState(0)
+
     function cellLeftClicked(x: number, y: number) {
-        if (gameOver) {
+        if (gameOver || won) {
             return
         }
 
-        setBoardState(OpenCell(boardState, x, y, setGameOver))
+        let ret = openCell(boardState, x, y, setGameOver)
+
+        setBoardState(ret.board)
+        setOpenedCells(openedCells + ret.openedCells)
 
         if (showHint) {
             setShowHint(false)
@@ -49,22 +59,36 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
     }
 
     function cellRightClicked(x: number, y: number) {
-        if (gameOver) {
+        if (gameOver || won) {
             return
         }
 
         if (boardState[x][y].state === 1) {
             setCellFlag(boardState, setBoardState, x, y, false)
+            setFlagCount(flagCount - 1)
         }
         else {
             setCellFlag(boardState, setBoardState, x, y, true)
+            setFlagCount(flagCount + 1)
         }
     }
 
+    useEffect(() => {
+        if ((openedCells + mines) === (rows * columns)) {
+            setWon(true)
+        }
+    }, [openedCells])
+
     return (
-        <div id="game">
-            <CreateBoard board={boardState} showHint={showHint} cellLeftClicked={cellLeftClicked} cellRightClicked={cellRightClicked}/>
-            <GameOverLabel gameOver={gameOver}/>
+        <div id="ms-game">
+            { (gameOver || won) && <GameEndScreen won={won} boardWidth={rows} boardHeight={columns} mines={mines} metalDetectors={metalDetectorsLeft} hint={hint}/> }
+            <div id="ms-game-hud">
+                <h1 className="ms-game-hud-display">{"Mines left: " + (mines - flagCount) }</h1>
+                <h1 className="ms-game-hud-display">{"Metal-Detectors: " + metalDetectors}</h1>
+            </div>
+            <div id="ms-board-container">
+                <CreateBoard board={boardState} showHint={showHint} cellLeftClicked={cellLeftClicked} cellRightClicked={cellRightClicked}/>
+            </div>
         </div>
     )
 }
@@ -86,15 +110,6 @@ function gameOverReveal(board: Cell[][]) {
     }
 }
 
-function GameOverLabel({gameOver}: {gameOver: boolean}) {
-    if (gameOver) {
-        return <h1 className="ms-game-over-label">GAME OVER</h1>
-    }
-    else {
-        return <></>
-    }
-}
-
 function setCellFlag(board: Cell[][], setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>, x: number, y: number, flagged: boolean) {
     let board_ = cloneDeep(board)
 
@@ -103,45 +118,49 @@ function setCellFlag(board: Cell[][], setBoard: React.Dispatch<React.SetStateAct
     setBoard(board_)
 }
 
-function OpenCell(board: Cell[][], x: number, y: number, setGameOver: React.Dispatch<React.SetStateAction<boolean>>) {
+function openCell(board: Cell[][], x: number, y: number, setGameOver: React.Dispatch<React.SetStateAction<boolean>>) {
     let board_ = cloneDeep(board)
+    let openedCells = 0
 
     if (board_[x][y].state > 1) {
-        return board_
+        return {board: board_, openedCells: openedCells}
     }
 
+    console.log(x, y)
+    // Game Over
     if (board_[x][y].isMine) {
         board_[x][y].state = 3
         setGameOver(true)
         gameOverReveal(board_)
+        return {board: board_, openedCells: openedCells}
     }
     else {
         board_[x][y].state = 2
+        openedCells++
     }
 
-    // Game Over
-    if (board_[x][y].isMine) {
-        console.log("Game Over")
-    }
     // If there are no adjacent mines, open all adjacent tiles
-    else if (board_[x][y].nearbyMines === 0) {
+    if (board_[x][y].nearbyMines === 0) {
         
         if (!hasAdjacentMines(board_, x, y)) {
             for (let x_ = -1; x_ <= 1; x_++) {
                 for (let y_ = -1; y_ <= 1; y_++) {
                     // Check if position is outside of the board-bounds.
-                    if ((x + x_ < 0) || (x + x_ > board_.length - 1) || (y + y_ < 0) || (y + y_ > board_[x + x_].length - 1)) {
+                    if ((x + x_ < 0) || (x + x_ > board_.length - 1) || (y + y_ < 0) || (y + y_ > board_[x + x_].length - 1) || (board_[x + x_][y + y_].state > 0)) {
                         continue
                     }
                     else {
-                        board_ = OpenCell(board_, x + x_, y + y_, setGameOver)
+                        let ret = openCell(board_, x + x_, y + y_, setGameOver)
+
+                        board_ = ret.board
+                        openedCells += ret.openedCells
                     }
                 }
             }
         }   
     }
 
-    return board_
+    return {board: board_, openedCells: openedCells}
 }
 
 function hasAdjacentMines(board: Cell[][], x: number, y: number) {
