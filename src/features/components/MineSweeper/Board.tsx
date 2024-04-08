@@ -85,6 +85,8 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
             <div id="ms-game-hud">
                 <h1 className="ms-game-hud-display">{"Mines left: " + (mines - flagCount) }</h1>
                 <h1 className="ms-game-hud-display">{"Metal-Detectors: " + metalDetectors}</h1>
+                <button className="ms-game-hud-button">Use metal detector</button>
+                <button id="ms-game-hud-clear-flags-button" className="ms-game-hud-button">Clear flags</button>
             </div>
             <div id="ms-board-container">
                 <CreateBoard board={boardState} showHint={showHint} cellLeftClicked={cellLeftClicked} cellRightClicked={cellRightClicked}/>

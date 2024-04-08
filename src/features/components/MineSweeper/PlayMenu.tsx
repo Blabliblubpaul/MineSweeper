@@ -10,7 +10,7 @@ export default function PlayMenu() {
     const [boardHeight, setBoardHeight] = useState(9)
     const [mineCount, setMineCount] = useState(10)
     const [metalDetectors, setMetalDetectors] = useState(0)
-    const [hint, setHint] = useState(false)
+    const [hint, setHint] = useState(true)
 
     const [maxMineCount, setMaxMineCount] = useState(40)
 

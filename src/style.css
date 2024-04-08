@@ -68,6 +68,7 @@ body {
   width: 100%;
 
   display: flex;
+  align-items: baseline;
   justify-content: left;
 
   background: var(--hud-panel-color);
@@ -76,6 +77,31 @@ body {
 .ms-game-hud-display {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+.ms-game-hud-button {
+  width: fit-content;
+  height: fit-content;
+
+  margin-left: 1rem;
+
+  font-size: x-large;
+
+  background: var(--hud-button-color);
+}
+
+#ms-game-hud-clear-flags-button {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.ms-game-hud-button:hover {
+  cursor: pointer;
+  background: var(--hud-button-focus-color);
+}
+
+.ms-game-hud-button:active {
+  background: var(--hud-button-active-color);
 }
 
 #ms-board-container {
@@ -351,6 +377,10 @@ body {
   --menu-button-disabled-border: rgba(104, 104, 104, 0.7);
   --menu-button-disabled-text: rgba(0, 0, 0, 0.6);
 
+  --hud-button-color: rgb(150, 150, 150);
+  --hud-button-focus-color: rgb(135, 135, 135);
+  --hud-button-active-color: rgb(120, 120, 120);
+
   --game-end-button-color: rgb(155, 155, 155);
   --game-end-button-focus-color: rgb(140, 140, 140);
   --game-end-button-focus-color: rgb(120, 120, 120);
@@ -399,6 +429,10 @@ body {
   --menu-button-disabled: rgb(140, 140, 140);
   --menu-button-disabled-border: rgba(45, 45, 45, 0.7);
   --menu-button-disabled-text: rgba(0, 0, 0, 0.6);
+
+  --hud-button-color: rgb(80, 80, 80);
+  --hud-button-focus-color: rgb(70, 70, 70);
+  --hud-button-active-color: rgb(60, 60, 60);
 
   --game-end-button-color: rgb(155, 155, 155);
   --game-end-button-focus-color: rgb(140, 140, 140);
