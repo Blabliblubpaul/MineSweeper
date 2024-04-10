@@ -163,7 +163,7 @@ body {
 }
 
 .ms-cell:hover {
-  cursor: pointer;
+  cursor: var(--cell-cursor);
 
   background: var(--unopened-cell-focus-color);
 }
@@ -395,6 +395,13 @@ body {
   /* Header */
   --header-background-color: rgb(120, 120, 120);
   --header-button-outline-color: rgb(75, 75, 75);
+
+  /* Cell cursor */
+  --cell-cursor: pointer;
+}
+
+.metal-detector-active {
+  --cell-cursor: help;
 }
 
 .dark-mode {

@@ -33,6 +33,9 @@ interface BoardCreationProps {
 
 export default function Board({rows, columns, mines, metalDetectors, hint}: BoardParams) {
     const [boardState, setBoardState] = useState(createBoardArray(rows, columns, mines, hint))
+    const [time, setTime] = useState(0)
+    const [timerId, setTimerId] = useState<NodeJS.Timer | undefined>(undefined)
+    const [metalDetectorActive, setMetalDetectorActive] = useState(false)
     const [gameOver, setGameOver] = useState(false)
     const [won, setWon] = useState(false)
 
@@ -48,7 +51,7 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
             return
         }
 
-        let ret = openCell(boardState, x, y, setGameOver)
+        let ret = openCell(boardState, x, y, gameOverFunc)
 
         setBoardState(ret.board)
         setOpenedCells(openedCells + ret.openedCells)
@@ -73,20 +76,41 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
         }
     }
 
+    function gameOverFunc(board: Cell[][]) {
+        setGameOver(true)
+        clearInterval(timerId)
+
+        gameOverReveal(board)
+    }
+
+    useEffect(() => {
+        let id = setInterval(() => {
+            setTime(time => time + 1)
+        }, 1000)
+
+        setTimerId(id)
+
+        return () => {
+            clearInterval(id)
+        }
+    }, [])
+
     useEffect(() => {
         if ((openedCells + mines) === (rows * columns)) {
             setWon(true)
+            clearInterval(timerId)
         }
     }, [openedCells])
 
     return (
         <div id="ms-game">
-            { (gameOver || won) && <GameEndScreen won={won} boardWidth={rows} boardHeight={columns} mines={mines} metalDetectors={metalDetectorsLeft} hint={hint}/> }
+            { (gameOver || won) && <GameEndScreen won={won} time={time} boardWidth={rows} boardHeight={columns} mines={mines} metalDetectors={metalDetectorsLeft} hint={hint}/> }
             <div id="ms-game-hud">
                 <h1 className="ms-game-hud-display">{"Mines left: " + (mines - flagCount) }</h1>
                 <h1 className="ms-game-hud-display">{"Metal-Detectors: " + metalDetectors}</h1>
                 <button className="ms-game-hud-button">Use metal detector</button>
                 <button id="ms-game-hud-clear-flags-button" className="ms-game-hud-button">Clear flags</button>
+                <h1 className="ms-game-hud-display">{"Time: " + time}</h1>
             </div>
             <div id="ms-board-container">
                 <CreateBoard board={boardState} showHint={showHint} cellLeftClicked={cellLeftClicked} cellRightClicked={cellRightClicked}/>
@@ -120,7 +144,7 @@ function setCellFlag(board: Cell[][], setBoard: React.Dispatch<React.SetStateAct
     setBoard(board_)
 }
 
-function openCell(board: Cell[][], x: number, y: number, setGameOver: React.Dispatch<React.SetStateAction<boolean>>) {
+function openCell(board: Cell[][], x: number, y: number, /*setGameOver: React.Dispatch<React.SetStateAction<boolean>>,*/ gameOverFunc: (board: Cell[][]) => void) {
     let board_ = cloneDeep(board)
     let openedCells = 0
 
@@ -132,8 +156,9 @@ function openCell(board: Cell[][], x: number, y: number, setGameOver: React.Disp
     // Game Over
     if (board_[x][y].isMine) {
         board_[x][y].state = 3
-        setGameOver(true)
-        gameOverReveal(board_)
+        gameOverFunc(board_)
+        // setGameOver(true)
+        // gameOverReveal(board_)
         return {board: board_, openedCells: openedCells}
     }
     else {
@@ -152,7 +177,7 @@ function openCell(board: Cell[][], x: number, y: number, setGameOver: React.Disp
                         continue
                     }
                     else {
-                        let ret = openCell(board_, x + x_, y + y_, setGameOver)
+                        let ret = openCell(board_, x + x_, y + y_, gameOverFunc)
 
                         board_ = ret.board
                         openedCells += ret.openedCells
