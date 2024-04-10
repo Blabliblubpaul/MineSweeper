@@ -61,7 +61,7 @@ export default function PlayMenu() {
 
     function startGame() {
         if (!badBoardWidth && !badBoardHeight && !badMineCount && !badMetalDetectors) {
-            let params = "r=" + boardWidth + "&c=" + boardHeight + "&m=" + mineCount + "&d=" + metalDetectors + "&h=" + hint
+            let params = "c=" + boardWidth + "&r=" + boardHeight + "&m=" + mineCount + "&d=" + metalDetectors + "&h=" + hint
             navigate("/game?" + params)
         }
     }

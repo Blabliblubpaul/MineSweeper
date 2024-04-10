@@ -152,7 +152,6 @@ function openCell(board: Cell[][], x: number, y: number, /*setGameOver: React.Di
         return {board: board_, openedCells: openedCells}
     }
 
-    console.log(x, y)
     // Game Over
     if (board_[x][y].isMine) {
         board_[x][y].state = 3

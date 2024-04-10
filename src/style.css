@@ -205,6 +205,9 @@ body {
   top: 5rem;
   left: 0;
 
+  display: flex;
+  flex-direction: column;
+
   z-index: 1;
 
   text-align: center;
@@ -212,41 +215,88 @@ body {
   background-color: var(--overlay-color);
 }
 
+#ms-game-end-menu {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-bottom: 15rem;
+}
+
 .ms-game-end-label {
   height: fit-content;
   width: 100%;
+
+  margin: 0;
 
   font-size: 10vw;
   text-align: center;
 }
 
+#ms-game-end-time-label {
+  margin-bottom: 1rem;
+  
+  font-size: 4vw;
+}
+
 .ms-game-end-button {
-  display: block;
-  font-size: 4rem;
+  display: flex;
 
   margin-left: auto;
   margin-right: auto;
-  margin-top: 3rem;
+  margin-bottom: 3rem;
 
+  font-size: 4rem;
   text-wrap: nowrap;
-
-  opacity: 0.5;
 
   background: var(--game-end-button-color);
   color: var(--text-color);
 }
 
+#ms-game-end-visibility-button {
+  margin: 0;
+  margin-left: auto;
+
+  font-size: 1rem;
+  text-wrap: nowrap;
+}
+
+#ms-game-end-new-highscore {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+}
+
+#ms-game-end-new-highscore-label {
+  display: inline;
+  height: fit-content;
+  width: fit-content;
+
+  font-size: 5vw;
+}
+
+#ms-game-end-new-highscore-button {
+  margin: 0;
+
+  display: inline;
+
+  font-size: 1vw;
+}
+
+
+#ms-game-end-leaderboards-buttons {
+  margin-bottom: 1rem;
+
+  font-size: 1.5rem;
+}
+
 .ms-game-end-button:hover {
   cursor: pointer;
-
-  opacity: 1;
 
   background: var(--game-end-button-focus-color);
   color: var(--text-color);
 }
 
 .ms-game-end-button:active {
-  background: var(--game-end-button-focus-color);
+  background: var(--game-end-button-active-color);
 }
 
 #play-menu {
@@ -343,6 +393,37 @@ body {
   background: var(--menu-button-disabled)
 }
 
+#ms-leaderboards-table {
+  margin: auto;
+  margin-top: 10rem;
+
+  border-collapse: collapse;
+
+  border: 2px solid;
+}
+
+.ms-leaderboards-table-header-cell {
+  padding: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  font-size: xx-large;
+
+  border: 2px solid;
+  background: var(--table-header-background);
+}
+
+.ms-leaderboards-table-cell {
+  text-align: center;
+
+  font-size: x-large;
+  font-weight: bold;
+
+  border: 2px solid;
+
+  background: var(--table-cell-background);
+}
+
 :root {
   /* General */
   --site-background-color: rgb(228, 228, 228);
@@ -392,6 +473,10 @@ body {
   --panel-background: rgb(193, 193, 193);
   --panel-outline-color: black;
 
+  /* Tables */
+  --table-header-background: rgb(165, 165, 165);
+  --table-cell-background: rgb(200, 200, 200);
+
   /* Header */
   --header-background-color: rgb(120, 120, 120);
   --header-button-outline-color: rgb(75, 75, 75);
@@ -408,7 +493,7 @@ body {
   /* General */
   --site-background-color: rgb(110, 110, 110);
   --text-color: rgb(15, 15, 15);
-  --overlay-color: rgba(160, 160, 160, 0.5);
+  --overlay-color: rgba(100, 100, 100, 0.5);
 
   --input-color: rgb(130, 130, 130);
   --input-error-color: rgb(220, 0, 0);
@@ -441,9 +526,9 @@ body {
   --hud-button-focus-color: rgb(70, 70, 70);
   --hud-button-active-color: rgb(60, 60, 60);
 
-  --game-end-button-color: rgb(155, 155, 155);
-  --game-end-button-focus-color: rgb(140, 140, 140);
-  --game-end-button-focus-color: rgb(120, 120, 120);
+  --game-end-button-color: rgb(95, 95, 95);
+  --game-end-button-focus-color: rgb(80, 80, 80);
+  --game-end-button-active-color: rgb(60, 60, 60);
 
     /* Checkbox */
     --checkbox-accent-color: rgb(0, 100, 223);
@@ -451,6 +536,10 @@ body {
   /* Panels */
   --panel-background: rgb(95, 95, 95);
   --panel-outline-color: rgb(10, 10, 10);
+
+  /* Tables */
+  --table-header-background: rgb(100, 100, 100);
+  --table-cell-background: rgb(130, 130, 130);
 
   /* Header */
   --header-background-color: rgb(60, 60, 60);
