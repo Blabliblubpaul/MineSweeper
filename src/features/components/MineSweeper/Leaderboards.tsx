@@ -19,19 +19,22 @@ export default function Leaderboards() {
         async function fetch() {
             const data = await dbGetSignatures()
 
-            console.log(data)
-
             setLeaderboards(data)
         }
             
         fetch()
     }, [])
 
-    console.log(leaderboards)
+    console.log(settings)
+
+    function h(): undefined {
+        console.log("u");
+        return undefined
+    }
 
     return (
         <div id="ms-leaderboards">
-            <select id="ms-leaderboards-select">
+            <select id="ms-leaderboards-select" defaultValue={settings ? createSignature(settings) : h()} onChange={(e) => setSettings(createSettingsFromSignature(e.target.value))}>
                 <CreateLeaderboardSelect leaderboards={leaderboards}/>
             </select>
             <table id="ms-leaderboards-table">
@@ -49,11 +52,16 @@ export default function Leaderboards() {
     )
 }
 
+function createSignature(settings: Settings) {
+    let x = "w" + settings.w + "h" + settings.h + "m" + settings.m + "md" + settings.md + "hi" + settings.hi
+    console.log(x)
+    return x
+}
+
 function CreateLeaderboardSelect({leaderboards}: {leaderboards: string[]}) {
-    console.log(leaderboards)
     return (
         <>
-            {leaderboards.map((x, index) => <option key={index}>{x}</option>)}
+            { leaderboards.length > 0 ? leaderboards.map((x, index) => <option key={index}>{x}</option>) : <></>}
         </>
     )
 }
@@ -108,7 +116,9 @@ function createSettings(searchParams: URLSearchParams) {
 }
 
 function createSettingsFromSignature(signature: string) {
-    const parts = ["w", "h", "m", "md", "hi"]
+    // Easier if all keys have a length of one
+    signature = signature.replace("md", "d").replace("hi", "i")
+    const parts = ["w", "h", "m", "d", "i"]
 
     let settings_numeric: number[] = []
     let settings_boolean: boolean = false
@@ -119,8 +129,8 @@ function createSettingsFromSignature(signature: string) {
         if (signature[i] === parts[partIndex]) {
             continue
         }
-        else if (partIndex < parts.length && signature[i] === parts[partIndex + 1]) {
-            if (parts[partIndex] === "hi") {
+        else if (i === signature.length - 1 || (partIndex < parts.length && signature[i] === parts[partIndex + 1])) {
+            if (parts[partIndex] === "i") {
                 settings_boolean = Boolean(part)
             }
             else {
@@ -135,6 +145,7 @@ function createSettingsFromSignature(signature: string) {
         }
     }
 
+
     let settings: Settings = {
         w: settings_numeric[0],
         h: settings_numeric[1],
@@ -142,6 +153,7 @@ function createSettingsFromSignature(signature: string) {
         md: settings_numeric[3],
         hi: settings_boolean
     }
+
 
     return settings
 }

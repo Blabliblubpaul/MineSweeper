@@ -6,12 +6,13 @@ interface CellProps {
     state: number,
     nearbyMines: number,
     isHint: boolean,
+    isBombHint: boolean,
     gameOverReveal: boolean,
     cellLeftClicked: (x: number, y: number) => void,
     cellRightClicked: (x: number, y: number) => void
 }
 
-export default function Cell({x, y, state, nearbyMines, isHint, gameOverReveal, cellLeftClicked, cellRightClicked}: CellProps) {
+export default function Cell({x, y, state, nearbyMines, isHint, isBombHint, gameOverReveal, cellLeftClicked, cellRightClicked}: CellProps) {
     const [cellState, setCellState] = useState(state)
 
     useEffect(() => {
@@ -34,10 +35,10 @@ export default function Cell({x, y, state, nearbyMines, isHint, gameOverReveal, 
 
     switch (state) {
         case 0:
-            return <button className={"ms-cell" + (isHint ? " ms-cell-hint" : "")} onClick={handleLeftClick} onContextMenu={handleRightClick}></button>
+            return <button className={"ms-cell" + (isHint ? " ms-cell-hint" : (isBombHint ? " ms-cell-bomb-hint" : ""))} onClick={handleLeftClick} onContextMenu={handleRightClick}></button>
 
         case 1:
-            return <button className={"ms-cell"} onClick={handleLeftClick} onContextMenu={handleRightClick}><img className="cell-image" src="../images/flag.png"></img></button>
+            return <button className={"ms-cell" + (isBombHint ? " ms-cell-bomb-hint" : "")} onClick={handleLeftClick} onContextMenu={handleRightClick}><img className="cell-image" src="../images/flag.png"></img></button>
 
         case 2:
             return <div className={"ms-cell-container" + (gameOverReveal ? " ms-cell-container-game-over-reveal" : "")}><button className="ms-cell ms-cell-opened" style={{"color": getCellColor(nearbyMines)}} onClick={handleLeftClick} onContextMenu={handleRightClick}>{nearbyMines > 0 ? nearbyMines : ""}</button></div>

@@ -61,6 +61,8 @@ body {
 #ms-game {
   display: flex;
   flex-direction: column;
+
+  cursor: var(--game-cursor);
 }
 
 #ms-game-hud {
@@ -162,6 +164,10 @@ body {
   background: var(--cell-hint-color);
 }
 
+.ms-cell-bomb-hint {
+  background: var(--cell-bomb-hint-color);
+}
+
 .ms-cell:hover {
   cursor: var(--cell-cursor);
 
@@ -178,6 +184,14 @@ body {
 
 .ms-cell-hint:active {
   background: var(--cell-hint-active-color);
+}
+
+.ms-cell-bomb-hint:hover {
+  background: var(--cell-bomb-hint-hover-color);
+}
+
+.ms-cell-bomb-hint:active {
+  background: var(--cell-bomb-hint-active-color);
 }
 
 .ms-cell-opened {
@@ -444,6 +458,10 @@ body {
   --cell-hint-hover-color: rgb(75, 170, 70);
   --cell-hint-active-color: rgb(55, 150, 50);
 
+  --cell-bomb-hint-color: rgb(190, 95, 90);
+  --cell-bomb-hint-hover-color: rgb(170, 75, 70);
+  --cell-bomb-hint-active-color: rgb(150, 55, 50);
+
   --cell-game-over-reveal-color: rgb(120, 120, 120);
 
   /* HUD */
@@ -482,11 +500,13 @@ body {
   --header-button-outline-color: rgb(75, 75, 75);
 
   /* Cell cursor */
+  --game-cursor: auto;
   --cell-cursor: pointer;
 }
 
 .metal-detector-active {
   --cell-cursor: help;
+  --game-cursor: help;
 }
 
 .dark-mode {
@@ -507,6 +527,10 @@ body {
   --cell-hint-color: rgb(70, 150, 70);
   --cell-hint-hover-color: rgb(55, 130, 50);
   --cell-hint-active-color: rgb(35, 110, 30);
+
+  --cell-bomb-hint-color: rgb(150, 70, 70);
+  --cell-bomb-hint-hover-color: rgb(130, 55, 50);
+  --cell-bomb-hint-active-color: rgb(110, 35, 30);
 
   --cell-game-over-reveal-color: rgb(120, 120, 120);
 

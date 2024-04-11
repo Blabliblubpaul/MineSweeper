@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import Cell from "./Cell"
+import CellComponent from "./Cell"
 import cloneDeep from "lodash/cloneDeep"
 import GameEndScreen from "./GameEndScreen"
 
@@ -21,6 +21,7 @@ interface Cell {
     state: number,
     nearbyMines: number,
     hint: boolean,
+    bomb_hint: boolean,
     gameOverReveal: boolean
 }
 
@@ -51,6 +52,22 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
             return
         }
 
+        if (metalDetectorActive) {
+            if (boardState[x][y].isMine) {
+                let boardState_ = cloneDeep(boardState)
+                boardState_[x][y].bomb_hint = true
+                setBoardState(boardState_)
+            }
+
+            setMetalDetectorsLeft(metalDetectorsLeft - 1)
+            setMetalDetectorActive(false)
+            return
+        }
+
+        if (boardState[x][y].state === 2 && !boardState[x][y].isMine) {
+            setFlagCount(flagCount - 1)
+        }
+
         let ret = openCell(boardState, x, y, gameOverFunc)
 
         setBoardState(ret.board)
@@ -66,6 +83,11 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
             return
         }
 
+        if (metalDetectorActive) {
+            setMetalDetectorActive(false)
+            return
+        }
+
         if (boardState[x][y].state === 1) {
             setCellFlag(boardState, setBoardState, x, y, false)
             setFlagCount(flagCount - 1)
@@ -73,6 +95,12 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
         else {
             setCellFlag(boardState, setBoardState, x, y, true)
             setFlagCount(flagCount + 1)
+        }
+    }
+
+    function metalDetectorButtonHandle() {
+        if (metalDetectorsLeft > 0) {
+            setMetalDetectorActive(true)
         }
     }
 
@@ -96,6 +124,10 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
     }, [])
 
     useEffect(() => {
+        document.body.classList.toggle("metal-detector-active", metalDetectorActive)
+    }, [metalDetectorActive])
+
+    useEffect(() => {
         if ((openedCells + mines) === (rows * columns)) {
             setWon(true)
             clearInterval(timerId)
@@ -108,7 +140,7 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
             <div id="ms-game-hud">
                 <h1 className="ms-game-hud-display">{"Mines left: " + (mines - flagCount) }</h1>
                 <h1 className="ms-game-hud-display">{"Metal-Detectors: " + metalDetectors}</h1>
-                <button className="ms-game-hud-button">Use metal detector</button>
+                <button className="ms-game-hud-button" onClick={metalDetectorButtonHandle}>Use metal detector</button>
                 <button id="ms-game-hud-clear-flags-button" className="ms-game-hud-button">Clear flags</button>
                 <h1 className="ms-game-hud-display">{"Time: " + time}</h1>
             </div>
@@ -156,8 +188,6 @@ function openCell(board: Cell[][], x: number, y: number, /*setGameOver: React.Di
     if (board_[x][y].isMine) {
         board_[x][y].state = 3
         gameOverFunc(board_)
-        // setGameOver(true)
-        // gameOverReveal(board_)
         return {board: board_, openedCells: openedCells}
     }
     else {
@@ -214,7 +244,7 @@ function createBoardArray(rows: number, columns: number, mines: number, hint: bo
         let row: Cell[] = []
 
         for (let c = 0; c < columns; c++) {
-            row.push({isMine: false, state: 0, nearbyMines: 0, hint: false, gameOverReveal: false})
+            row.push({isMine: false, state: 0, nearbyMines: 0, hint: false, bomb_hint: false, gameOverReveal: false})
         }
 
         board.push(row)
@@ -333,7 +363,7 @@ function CreateBoard({board, showHint, cellLeftClicked, cellRightClicked}: Board
                 x.map((y, indexY) => {
                     let cell = board[indexX][indexY]
 
-                    return <Cell key={indexY} x={indexX} y={indexY} state={cell.state} nearbyMines={cell.nearbyMines} isHint={cell.hint && showHint} gameOverReveal={cell.gameOverReveal} cellLeftClicked={cellLeftClicked} cellRightClicked={cellRightClicked}/>
+                    return <CellComponent key={indexY} x={indexX} y={indexY} state={cell.state} nearbyMines={cell.nearbyMines} isHint={cell.hint && showHint} isBombHint={cell.bomb_hint} gameOverReveal={cell.gameOverReveal} cellLeftClicked={cellLeftClicked} cellRightClicked={cellRightClicked}/>
                 })
             }
         </div>
