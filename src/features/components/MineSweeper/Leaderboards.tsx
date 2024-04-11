@@ -81,19 +81,25 @@ function CreateTableContents({settings}: {settings: Settings | undefined}) {
         }
     }, [settings])
 
-    return(
-        <>
-            {
-                highscores.map((x, index) => 
-                    <tr key={index} className="ms-leaderboards-table-row">
-                        <td className="ms-leaderboards-table-cell">{index + 1}</td>
-                        <td className="ms-leaderboards-table-cell">{x}</td>
-                    </tr>)
-            }
-        </>
-    ) 
-    
-    
+    if (highscores.length > 0) {
+        return(
+            <>
+                {
+                    highscores.map((x, index) => 
+                        <tr key={index} className="ms-leaderboards-table-row">
+                            <td className="ms-leaderboards-table-cell">{index + 1}</td>
+                            <td className="ms-leaderboards-table-cell">{x}</td>
+                        </tr>)
+                }
+            </>
+        ) 
+    }
+    else {
+        return <tr className="ms-leaderboards-table-row">
+            <td className="ms-leaderboards-table-cell">-</td>
+            <td className="ms-leaderboards-table-cell">-</td>
+        </tr>
+    }
 }
 
 function createSettings(searchParams: URLSearchParams) {

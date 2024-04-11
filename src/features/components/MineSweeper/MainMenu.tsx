@@ -13,5 +13,12 @@ export default function MainMenu() {
         dispatch(set(dark ? "dark" : "light"))
     }
     
-    return <Link to="/menu">PLAY</Link>
+    // return <Link to="/menu">PLAY</Link>
+
+    return (
+        <div id="main-menu">
+            <h1 id="main-menu-header">Mine Sweeper</h1>
+            <button id="main-menu-button">PLAY</button>
+        </div>
+    )
 }
