@@ -38,13 +38,13 @@ export default function Cell({x, y, state, nearbyMines, isHint, isBombHint, game
             return <button className={"ms-cell" + (isHint ? " ms-cell-hint" : (isBombHint ? " ms-cell-bomb-hint" : ""))} onClick={handleLeftClick} onContextMenu={handleRightClick}></button>
 
         case 1:
-            return <button className={"ms-cell" + (isBombHint ? " ms-cell-bomb-hint" : "")} onClick={handleLeftClick} onContextMenu={handleRightClick}><img className="cell-image" src="../images/flag.png"></img></button>
+            return <button className={"ms-cell" + (isBombHint ? " ms-cell-bomb-hint" : "")} onClick={handleLeftClick} onContextMenu={handleRightClick}><img className="cell-image" src="../images/flag.png" alt=""></img></button>
 
         case 2:
             return <div className={"ms-cell-container" + (gameOverReveal ? " ms-cell-container-game-over-reveal" : "")}><button className="ms-cell ms-cell-opened" style={{"color": getCellColor(nearbyMines)}} onClick={handleLeftClick} onContextMenu={handleRightClick}>{nearbyMines > 0 ? nearbyMines : ""}</button></div>
 
         case 3:
-            return <div className={"ms-cell-container" + (gameOverReveal ? " ms-cell-container-game-over-reveal" : "")}><button className={"ms-cell ms-cell-opened"  + (gameOverReveal ? "" : "")} onClick={handleLeftClick} onContextMenu={handleRightClick}><img className="cell-image" src="../images/mine.png"></img></button></div>
+            return <div className={"ms-cell-container" + (gameOverReveal ? " ms-cell-container-game-over-reveal" : "")}><button className={"ms-cell ms-cell-opened"  + (gameOverReveal ? "" : "")} onClick={handleLeftClick} onContextMenu={handleRightClick}><img className="cell-image" src="../images/mine.png" alt=""></img></button></div>
 
         default:
             return <button className={"ms-cell"} onClick={handleLeftClick} onContextMenu={handleRightClick}></button>

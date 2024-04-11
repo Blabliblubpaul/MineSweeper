@@ -111,6 +111,22 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
         gameOverReveal(board)
     }
 
+    function clearFlags(board: Cell[][]) {
+        let board_ = cloneDeep(board)
+    
+        for (let x = 0; x < board.length; x++) {
+            for (let y = 0; y < board[x].length; y++) {
+                if (board[x][y].state === 1) {
+                    board_[x][y].state = 0
+                }
+            }
+        }
+
+        setFlagCount(0)
+    
+        setBoardState(board_)
+    }
+
     useEffect(() => {
         let id = setInterval(() => {
             setTime(time => time + 1)
@@ -136,12 +152,12 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
 
     return (
         <div id="ms-game">
-            { (gameOver || won) && <GameEndScreen won={won} time={time} boardWidth={rows} boardHeight={columns} mines={mines} metalDetectors={metalDetectorsLeft} hint={hint}/> }
+            { (gameOver || won) && <GameEndScreen won={won} time={time} boardWidth={rows} boardHeight={columns} mines={mines} metalDetectors={metalDetectors} hint={hint}/> }
             <div id="ms-game-hud">
                 <h1 className="ms-game-hud-display">{"Mines left: " + (mines - flagCount) }</h1>
-                <h1 className="ms-game-hud-display">{"Metal-Detectors: " + metalDetectors}</h1>
+                <h1 className="ms-game-hud-display">{"Metal-Detectors: " + metalDetectorsLeft}</h1>
                 <button className="ms-game-hud-button" onClick={metalDetectorButtonHandle}>Use metal detector</button>
-                <button id="ms-game-hud-clear-flags-button" className="ms-game-hud-button">Clear flags</button>
+                <button id="ms-game-hud-clear-flags-button" className="ms-game-hud-button" onClick={() => clearFlags(boardState)}>Clear flags</button>
                 <h1 className="ms-game-hud-display">{"Time: " + time}</h1>
             </div>
             <div id="ms-board-container">
