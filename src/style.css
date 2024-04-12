@@ -79,6 +79,8 @@ body {
 .main-menu-button {
   height: fit-content;
 
+  border-width: 3px;
+
   background: var(--hud-button-color);
 }
 
@@ -611,7 +613,7 @@ body {
 
 .dark-mode {
   /* General */
-  --site-background-color: rgb(110, 110, 110);
+  --site-background-color: rgb(105, 105, 105);
   --text-color: rgb(15, 15, 15);
   --overlay-color: rgba(100, 100, 100, 0.5);
 
