@@ -47,12 +47,12 @@ export default function PlayMenu2() {
     const [boardWidthString, setBoardWidthString] = useState("9")
     const [boardWidth, setBoardWidth] = useState(9)
     const minBoardWidth = 5
-    const maxBoardWidth = 100
+    const maxBoardWidth = 85
 
     const [boardHeightString, setBoardHeightString] = useState("9")
     const [boardHeight, setBoardHeight] = useState(9)
     const minBoardHeight = 5
-    const maxBoardHeight = 100
+    const maxBoardHeight = 85
 
     const [mineCountString, setMineCountString] = useState("10")
     const [mineCount, setMineCount] = useState(10)

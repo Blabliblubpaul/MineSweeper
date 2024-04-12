@@ -76,13 +76,36 @@ body {
   font-size: 10vw;
 }
 
-#main-menu-button {
-  width: 40%;
+.main-menu-button {
   height: fit-content;
 
-  font-size: 500%;
-
   background: var(--hud-button-color);
+}
+
+#main-menu-play-button {
+  width: 40%;
+  min-width: fit-content;
+
+  font-size: 500%;
+}
+
+#main-menu-leaderboards-button {
+  width: 25%;
+  min-width: fit-content;
+
+  margin-top: 1rem;
+
+  font-size: 300%;
+}
+
+.main-menu-button:hover {
+  cursor: pointer;
+
+  background: var(--hud-button-focus-color);
+}
+
+.main-menu-button:active {
+  background: var(--hud-button-active-color);
 }
 
 #ms-game-hud {
@@ -461,10 +484,10 @@ body {
 #ms-leaderboards {
   position: fixed;
 
-  top: 30%;
+  top: 45%;
   left: 50%;
 
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -45%);
 
   display: flex;
   flex-direction: column;

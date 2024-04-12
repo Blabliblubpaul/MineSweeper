@@ -89,11 +89,11 @@ export default function Board({rows, columns, mines, metalDetectors, hint}: Boar
         }
 
         if (boardState[x][y].state === 1) {
-            setCellFlag(boardState, setBoardState, x, y, false)
+            setBoardState(setCellFlag(boardState, x, y, false))
             setFlagCount(flagCount - 1)
         }
         else {
-            setCellFlag(boardState, setBoardState, x, y, true)
+            setBoardState(setCellFlag(boardState, x, y, true))
             setFlagCount(flagCount + 1)
         }
     }
@@ -184,12 +184,12 @@ function gameOverReveal(board: Cell[][]) {
     }
 }
 
-function setCellFlag(board: Cell[][], setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>, x: number, y: number, flagged: boolean) {
+function setCellFlag(board: Cell[][], x: number, y: number, flagged: boolean) {
     let board_ = cloneDeep(board)
 
     board_[x][y].state = flagged ? 1 : 0
 
-    setBoard(board_)
+    return board_
 }
 
 function openCell(board: Cell[][], x: number, y: number, /*setGameOver: React.Dispatch<React.SetStateAction<boolean>>,*/ gameOverFunc: (board: Cell[][]) => void) {
@@ -197,60 +197,63 @@ function openCell(board: Cell[][], x: number, y: number, /*setGameOver: React.Di
     let openedCells = 0
 
     if (board_[x][y].state > 1) {
-        return {board: board_, openedCells: openedCells}
+        return {board: board_, openedCells: 0}
     }
 
     // Game Over
     if (board_[x][y].isMine) {
         board_[x][y].state = 3
         gameOverFunc(board_)
-        return {board: board_, openedCells: openedCells}
+        return {board: board_, openedCells: 0}
     }
-    else {
-        board_[x][y].state = 2
-        openedCells++
-    }
+
+    board_[x][y].state = 2
+    openedCells++
 
     // If there are no adjacent mines, open all adjacent tiles
     if (board_[x][y].nearbyMines === 0) {
-        
-        if (!hasAdjacentMines(board_, x, y)) {
-            for (let x_ = -1; x_ <= 1; x_++) {
-                for (let y_ = -1; y_ <= 1; y_++) {
-                    // Check if position is outside of the board-bounds.
-                    if ((x + x_ < 0) || (x + x_ > board_.length - 1) || (y + y_ < 0) || (y + y_ > board_[x + x_].length - 1) || (board_[x + x_][y + y_].state > 0)) {
-                        continue
-                    }
-                    else {
-                        let ret = openCell(board_, x + x_, y + y_, gameOverFunc)
+        for (let x_ = -1; x_ <= 1; x_++) {
+            for (let y_ = -1; y_ <= 1; y_++) {
+                // Check if position is outside of the board-bounds.
+                if ((x + x_ < 0) || (x + x_ > board_.length - 1) || (y + y_ < 0) || (y + y_ > board_[x + x_].length - 1) || (board_[x + x_][y + y_].state > 0)) {
+                    continue
+                }
+                else {
+                    let ret = autoOpenCell(board_, x + x_, y + y_)
 
-                        board_ = ret.board
-                        openedCells += ret.openedCells
-                    }
+                    openedCells += ret
                 }
             }
-        }   
+        }  
     }
 
     return {board: board_, openedCells: openedCells}
 }
 
-function hasAdjacentMines(board: Cell[][], x: number, y: number) {
-    for (let x_ = -1; x_ <= 1; x_++) {
-        for (let y_ = -1; y_ <= 1; y_++) {
-            // Check if position is outside of the board-bounds.
-            if ((x + x_ < 0) || (x + x_ > board.length - 1) || (y + y_ < 0) || (y + y_ > board[x + x_].length - 1)) {
-                continue
-            }
-            else {
-                if (board[x + x_][y + y_].isMine) {
-                    return true
+function autoOpenCell(board: Cell[][], x: number, y: number) {
+    let openedCells = 0
+
+    board[x][y].state = 2
+    openedCells++
+
+    // If there are no adjacent mines, open all adjacent tiles
+    if (board[x][y].nearbyMines === 0) {
+        for (let x_ = -1; x_ <= 1; x_++) {
+            for (let y_ = -1; y_ <= 1; y_++) {
+                // Check if position is outside of the board-bounds.
+                if ((x + x_ < 0) || (x + x_ > board.length - 1) || (y + y_ < 0) || (y + y_ > board[x + x_].length - 1) || (board[x + x_][y + y_].state > 0)) {
+                    continue
+                }
+                else {
+                    let ret = autoOpenCell(board, x + x_, y + y_)
+
+                    openedCells += ret
                 }
             }
-        }
+        }  
     }
 
-    return false
+    return openedCells
 }
 
 function createBoardArray(rows: number, columns: number, mines: number, hint: boolean) {

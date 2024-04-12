@@ -25,16 +25,9 @@ export default function Leaderboards() {
         fetch()
     }, [])
 
-    console.log(settings)
-
-    function h(): undefined {
-        console.log("u");
-        return undefined
-    }
-
     return (
         <div id="ms-leaderboards">
-            <select id="ms-leaderboards-select" defaultValue={settings ? createSignature(settings) : h()} onChange={(e) => setSettings(createSettingsFromSignature(e.target.value))}>
+            <select id="ms-leaderboards-select" defaultValue={settings ? createSignature(settings) : undefined} onChange={(e) => setSettings(createSettingsFromSignature(e.target.value))}>
                 <CreateLeaderboardSelect leaderboards={leaderboards}/>
             </select>
             <table id="ms-leaderboards-table">
@@ -54,7 +47,6 @@ export default function Leaderboards() {
 
 function createSignature(settings: Settings) {
     let x = "w" + settings.w + "h" + settings.h + "m" + settings.m + "md" + settings.md + "hi" + settings.hi
-    console.log(x)
     return x
 }
 

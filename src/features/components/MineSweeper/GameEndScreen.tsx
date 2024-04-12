@@ -28,7 +28,7 @@ export default function GameEndScreen({won, time, boardWidth, boardHeight, mines
     useEffect(() => {
         const fetch = async () => {
             const data = await dbTestHighscore(boardWidth, boardHeight, mines, metalDetectors, hint, time)
-            console.log(data)
+
             setIsHighscore(await dbTestHighscore(boardWidth, boardHeight, mines, metalDetectors, hint, time))
         }
 
